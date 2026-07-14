@@ -7,6 +7,7 @@ from sc2.player import Bot, Human, Computer
 from sc2.ids.unit_typeid import UnitTypeId
 from sc2.ids.upgrade_id import UpgradeId
 from sc2.ids.ability_id import AbilityId
+from sc2.ids.buff_id import BuffId
 
 
 class MyProtossBot(BotAI):
@@ -16,6 +17,11 @@ class MyProtossBot(BotAI):
         """Run once per game step."""
 
         await self.distribute_workers()
+
+        nexus = self.townhalls.ready.random
+        if not nexus.has_buff(BuffId.CHRONOBOOSTENERGYCOST) and not nexus.is_idle:
+                if nexus.energy >= 50:
+                    nexus(AbilityId.EFFECT_CHRONOBOOSTENERGYCOST, nexus)
 
         if not self.townhalls:
             if self.can_afford(UnitTypeId.NEXUS) and self.start_location:
@@ -95,16 +101,27 @@ class MyProtossBot(BotAI):
                 return
 
 
+# for 1V1
+# def main():
+#     run_game(
+#         maps.get("PylonAIE_v4"),
+#         [
+#             Human(Race.Protoss),  # You as human
+#             Bot(Race.Protoss, MyProtossBot()),  # Your Protoss bot
+#         ],
+#         realtime=True
+#     )
+
+# for bot VS AI
 def main():
     run_game(
         maps.get("PylonAIE_v4"),
         [
-            Human(Race.Protoss),  # You as human
             Bot(Race.Protoss, MyProtossBot()),  # Your Protoss bot
+            Computer(Race.Zerg, Difficulty.Easy), # SC2 AI
         ],
-        realtime=True
+        realtime=False
     )
-
 
 if __name__ == "__main__":
     main()

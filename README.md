@@ -8,6 +8,7 @@ A Protoss bot for StarCraft II built with Python and the burnysc2 library.
 - Produces Zealots, Stalkers and Immortals
 - Attacks with a deathball army!
 - Uses Chrono Boost on Nexus
+- Can win against SC2 AI on Easy mode
 
 ## Requirements
 
