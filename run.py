@@ -1,10 +1,10 @@
 # run.py
 
 #main bot
-from my_bot import main
+# from my_bot import main
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
 
 #warp units
 # from tests.tech.test_warp import main
@@ -17,3 +17,9 @@ if __name__ == "__main__":
 
 # if __name__ == "__main__":
 #     main()
+
+#smart pylones building
+from tests.macro.smart_pylone_building import main
+
+if __name__ == "__main__":
+    main()
