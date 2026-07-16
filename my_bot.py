@@ -92,10 +92,10 @@ class MyProtossBot(BotAI):
                 if sentry_count < zealot_count // 3:
                     gateway.train(UnitTypeId.SENTRY)
 
-        army_size = self.units(UnitTypeId.ZEALOT).amount + self.units(UnitTypeId.IMMORTAL).amount + self.units(UnitTypeId.SENTRY).amount
+        army_size = self.units(UnitTypeId.ZEALOT).amount + self.units(UnitTypeId.IMMORTAL).amount + self.units(UnitTypeId.SENTRY).amount + self.units(UnitTypeId.STALKER).amount
         if army_size > 20 and self.enemy_start_locations:
             enemy_base = self.enemy_start_locations[0]
-            for unit in self.units({UnitTypeId.ZEALOT, UnitTypeId.IMMORTAL, UnitTypeId.SENTRY}):
+            for unit in self.units({UnitTypeId.ZEALOT, UnitTypeId.IMMORTAL, UnitTypeId.SENTRY, UnitTypeId.STALKER}):
                 unit.attack(enemy_base)
 
 # for 1V1
