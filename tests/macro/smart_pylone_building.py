@@ -46,14 +46,6 @@ class MinimalBot(BotAI):
         
         # 6. Check if we need a pylon
         need_pylon = supply_left_after_builds < SUPPLY_BUFFER
-
-        print(current_supply_used, "used")
-        print(current_supply_cap, "all")
-        print(building_pylons, "pylones in progress")
-        print(building_nexuses, "nexuses in progress")
-        print(future_supply_cap, "future all suply")
-        print(supply_left_after_builds, "future available supply")
-        print(need_pylon, "need pylon")
         
         # 7. Build if needed
         if (need_pylon) and self.can_afford(UnitTypeId.PYLON):
