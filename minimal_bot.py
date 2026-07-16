@@ -6,13 +6,14 @@ from sc2.player import Bot, Computer
 from sc2.ids.unit_typeid import UnitTypeId
 
 class MinimalBot(BotAI):
-    """Minimal bot - builds Pylons and that's it"""
+    """Minimal bot - builds Pylons and Train Probes that's it"""
     
     async def on_step(self, iteration: int):
         await self.distribute_workers()
         # Build Pylons
         if self.can_afford(UnitTypeId.PYLON):
             await self.build(UnitTypeId.PYLON, near=self.start_location)
+        # Train Probes
         if self.can_afford(UnitTypeId.PROBE) and self.supply_left > 0:
             if self.units(UnitTypeId.PROBE).amount < 20:
                 for nexus in self.townhalls:
