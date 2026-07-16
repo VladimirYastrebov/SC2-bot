@@ -41,8 +41,8 @@ class MyProtossBot(BotAI):
                 await self.build(UnitTypeId.NEXUS, near=self.start_location)
             return
 
-        if self.supply_left < 5 and self.can_afford(UnitTypeId.PYLON):
-            await self.build(UnitTypeId.PYLON, near=self.townhalls.first)
+        if self.supply_left < 9:
+            await self.build_smart_pylons()
 
         if self.can_afford(UnitTypeId.PROBE) and self.supply_left > 0:
             if self.units(UnitTypeId.PROBE).amount < 20:
@@ -97,6 +97,40 @@ class MyProtossBot(BotAI):
             enemy_base = self.enemy_start_locations[0]
             for unit in self.units({UnitTypeId.ZEALOT, UnitTypeId.IMMORTAL, UnitTypeId.SENTRY, UnitTypeId.STALKER}):
                 unit.attack(enemy_base)
+
+    async def build_smart_pylons(self):
+        """Build pylons based on supply calculations, not spam!"""
+        
+        # 1. Get current state
+        current_supply_used = self.supply_used
+        current_supply_cap = self.supply_cap
+        
+        # 2. Count buildings under construction
+        building_pylons = self.already_pending(UnitTypeId.PYLON)
+        building_nexuses = self.already_pending(UnitTypeId.NEXUS)
+        
+        # 3. Supply constants
+        SUPPLY_PER_PYLON = 8
+        SUPPLY_PER_NEXUS = 15
+        SUPPLY_BUFFER = 8
+        
+        # 4. Calculate future supply
+        future_supply_cap = (
+            current_supply_cap 
+            + (building_pylons * SUPPLY_PER_PYLON) 
+            + (building_nexuses * SUPPLY_PER_NEXUS)
+        )
+        
+        # 5. Calculate supply left after builds
+        supply_left_after_builds = future_supply_cap - current_supply_used
+        
+        # 6. Check if we need a pylon
+        need_pylon = supply_left_after_builds < SUPPLY_BUFFER
+        
+        # 7. Build if needed
+        if (need_pylon) and self.can_afford(UnitTypeId.PYLON):
+            if not self.structures(UnitTypeId.PYLON).not_ready:
+                await self.build(UnitTypeId.PYLON, near=self.townhalls.first)
 
 # for 1V1
 # def main():
